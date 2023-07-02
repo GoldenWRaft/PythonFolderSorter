@@ -21,13 +21,17 @@ def sort_files_in_a_folder(mypath):
             else:
                 os.mkdir(new_folder_name)
     for file in files:
+        count = 1
         src_path=mypath+'/'+file
         filetype=file.split('.')[-1]
         if filetype in filetype_folder_dict.keys():
             dest_path=filetype_folder_dict[str(filetype)]
-            shutil.move(src_path,dest_path)
-            print(src_path + '>>>' + dest_path)
+            destination_file = dest_path + '/' + file
+            while os.path.exists(destination_file):
+                destination_file = os.path.join(dest_path, f"{file.split('.')[0]} ({count}).{file.split('.')[-1]}")
+                count += 1
+            shutil.move(src_path, destination_file)
+            print(src_path + ' >>> ' + destination_file)
 if __name__=="__main__":
-    # Put Path here to sort
     path='C:/Users/user-pc/Downloads'
     sort_files_in_a_folder(path)
